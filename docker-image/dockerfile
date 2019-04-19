@@ -1,0 +1,58 @@
+FROM mrkibk/systemc-verilator:1.0
+
+LABEL Description="SystemC/Verilator minimal image" Version="1.1"
+
+# Create working dir
+WORKDIR /work
+
+# Cope the export file
+COPY docker_exports.sh /work
+
+# First run the update
+RUN apt-get update
+
+# Define version of SystemC
+ENV SYSTEMC_VERSION "systemc-2.3.3"
+
+# Install systemc
+RUN apt-get install -y build-essential wget \
+    && wget https://www.accellera.org/images/downloads/standards/systemc/$SYSTEMC_VERSION.tar.gz \
+    && tar -xvf $SYSTEMC_VERSION.tar.gz \
+    && rm $SYSTEMC_VERSION.tar.gz \
+    && cd $SYSTEMC_VERSION \
+    && ./configure --prefix=/systemc && make && make install \
+    && cd /work \
+    && rm -rf $SYSTEMC_VERSION
+
+# # Export PATH
+# ENV PATH="/opt/gtk/bin:${PATH}" \
+#     SYSTEMC_HOME="/systemc" \
+#     SYSTEMC_TARGET_ARCH="linux64" \
+#     SYSTEMC_INCLUDE="${SYSTEMC_HOME}/include" \
+#     SYSTEMC_LIBDIR="${SYSTEMC_HOME}/lib-linux64" \
+#     LD_LIBRARY_PATH="${SYSTEMC_LIBDIR}:${LD_LIBRARY_PATH}"
+
+# Define version of Verilator
+ENV VERILATOR_VERSION "verilator-4.012"
+
+# Install Verilator
+RUN apt-get install -y git make autoconf g++ flex bison libfl-dev \
+    && wget https://www.veripool.org/ftp/$VERILATOR_VERSION.tgz \
+    && tar -xvf $VERILATOR_VERSION.tgz \
+    && rm $VERILATOR_VERSION.tgz \
+    && cd $VERILATOR_VERSION \
+    && ./configure --prefix=/verilator && make -j8 && make install \
+    && cd /work \
+    && rm -rf $VERILATOR_VERSION
+
+# # Export PATH
+# ENV PATH="/verilator/bin:${PATH}"
+
+# # Serucity thing
+# RUN useradd -ms /bin/bash newuser
+# USER newuser
+# WORKDIR /home/newuser
+
+#Add a script
+RUN ["chmod", "+x", "/work/docker_exports.sh"]
+# CMD ["/work/docker_exports.sh"]

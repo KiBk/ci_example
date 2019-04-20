@@ -1,4 +1,4 @@
-FROM mrkibk/systemc-verilator:1.2
+FROM mrkibk/systemc-verilator:1.5
 
 # Create working dir
 WORKDIR /work

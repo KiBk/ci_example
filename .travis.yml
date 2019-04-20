@@ -15,7 +15,7 @@ install:
 
 
 script:
-  - docker run -it iirm --name testbench systemc-verilator-tb make
+  - docker run -it --rm --name testbench systemc-verilator-tb make
   - exit
 
 # script:

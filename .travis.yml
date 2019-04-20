@@ -9,13 +9,13 @@ services:
 
 install:
   - docker pull mrkibk/systemc-verilator:1.5 || true
-  - docker build --tag systemc-verilator-tb --pull=true .
+  - docker build --tag systemc-verilator-tb .
 
 # before_script:
 
 
 script:
-  - docker run --it iirm --name testbench systemc-verilator-tb make
+  - docker run -it iirm --name testbench systemc-verilator-tb make
   - exit
 
 # script:

@@ -1,8 +1,8 @@
 sudo: required
 
 # Not sure if these are needed
-# language: minimal # maybe cpp
-# dist: trusty
+language: minimal # maybe cpp
+dist: ubuntu:latest
 
 services:
   - docker
@@ -16,7 +16,6 @@ install:
 
 script:
   - docker run -it --rm --name testbench systemc-verilator-tb make
-  - exit
 
 # script:
 #   - bundle exec rake test

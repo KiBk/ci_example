@@ -1,0 +1,10 @@
+# Ignore everything which starts with ".git"
+.git*
+README.md
+
+# Ignore build folders
+logs*
+obj_dir*
+
+# Ignore docker files
+docker*

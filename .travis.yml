@@ -1,12 +1,22 @@
-language: minimal # maybe cpp
+sudo: required
+
+# Not sure if these are needed
+# language: minimal # maybe cpp
+# dist: trusty
 
 services:
   - docker
 
-before_install:
-  - docker pull mrkibk/systemc-verilator:1.2
-  - docker build -t systemc-verilator-tb .
-  - docker run -d systemc-verilator-tb /bin/sh -c "make"
+install:
+  - docker pull mrkibk/systemc-verilator:1.5 || true
+  - docker build --tag systemc-verilator-tb --pull=true .
+
+# before_script:
+
+
+script:
+  - docker run --it iirm --name testbench systemc-verilator-tb make
+  - exit
 
 # script:
 #   - bundle exec rake test
